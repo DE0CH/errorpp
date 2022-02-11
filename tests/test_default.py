@@ -30,7 +30,7 @@ class TestCases(unittest.TestCase):
     def test_singleton_absolute(self):
         n = sympy.parse_expr('1')
         eq = sympy.Mul(n, abc.a, evaluate=False)
-        deq = errorpp._propagate(eq, absolute=False)
+        deq = errorpp.propagate(eq, absolute=False)
         teq = Delta(abc.a)
         self.assertEqual(deq, teq)
 
@@ -97,49 +97,96 @@ class TestCases(unittest.TestCase):
         teq = 13*11.2*abc.a**10.2*Delta(abc.a)
         self.assertEqual(deq, teq)
 
-    def test_complex(self):
+
+    def sub(self, eq):
         a = abc.a
         b = abc.b
         c = abc.c
         d = abc.d
+        eq = eq.subs(Delta(a), 13)
+        eq = eq.subs(Delta(b), 17)
+        eq = eq.subs(Delta(c), 23)
+        eq = eq.subs(Delta(d), 27)
+        eq = eq.subs(a, 3)
+        eq = eq.subs(b, 5)
+        eq = eq.subs(c, 7)
+        eq = eq.subs(d, 11)
+        return eq
+
+    def sub2(self, eq):
+        a = abc.a
+        b = abc.b
+        c = abc.c
+        d = abc.d
+        eq = eq.subs(Delta(a), -13)
+        eq = eq.subs(Delta(b), -17)
+        eq = eq.subs(Delta(c), -23)
+        eq = eq.subs(Delta(d), -27)
+        eq = eq.subs(a, -3)
+        eq = eq.subs(b, -5)
+        eq = eq.subs(c, -7)
+        eq = eq.subs(d, -11)
+
+    def sub3(self, eq):
+        a = abc.a
+        b = abc.b
+        c = abc.c
+        d = abc.d
+        eq = eq.subs(Delta(a), -8.94510561376186)
+        eq = eq.subs(Delta(b), 4.079451074836893)
+        eq = eq.subs(Delta(c), 9.614255160251382)
+        eq = eq.subs(Delta(d), -6.463977362260131)
+        eq = eq.subs(a, 3.2731278704164097)
+        eq = eq.subs(b, 9.221035394978145)
+        eq = eq.subs(c, -1.069023616440468)
+        eq = eq.subs(d, -0.3152866361678459)
+
+    def test_complex(self):
         eq = ((abc.a+abc.b)*abc.c/abc.d)**3
         deq = errorpp.propagate(eq, absolute=False)
         teq = 3 * ((abc.a+abc.b)*abc.c/abc.d)**2 * errorpp.propagate((abc.a+abc.b)*abc.c/abc.d)
-        def sub(eq):
-            eq = eq.subs(Delta(a), 13)
-            eq = eq.subs(Delta(b), 17)
-            eq = eq.subs(Delta(c), 23)
-            eq = eq.subs(Delta(d), 27)
-            eq = eq.subs(a, 3)
-            eq = eq.subs(b, 5)
-            eq = eq.subs(c, 7)
-            eq = eq.subs(d, 11)
-            return eq
 
-        self.assertAlmostEqual(sub(deq), sub(teq))
+        self.assertAlmostEqual(self.sub(deq), self.sub(teq))
 
     def test_complex2(self):
-        a = abc.a
-        b = abc.b
-        c = abc.c
-        d = abc.d
+
         eq = (abc.c+abc.d)**3
         deq = errorpp.propagate(eq, absolute=False)
         teq = 3 * (abc.c+abc.d)**2 * errorpp.propagate(abc.c+abc.d)
-        
-        def sub(eq):
-            eq = eq.subs(Delta(a), 13)
-            eq = eq.subs(Delta(b), 17)
-            eq = eq.subs(Delta(c), 23)
-            eq = eq.subs(Delta(d), 27)
-            eq = eq.subs(a, 3)
-            eq = eq.subs(b, 5)
-            eq = eq.subs(c, 7)
-            eq = eq.subs(d, 11)
-            return eq
+    
+        self.assertAlmostEqual(self.sub(deq), self.sub(teq))
 
-        self.assertAlmostEqual(sub(deq), sub(teq))
+    def test_complex3(self):
+        eq = ((abc.a + abc.b)*abc.c/abc.d)
+        deq = errorpp.propagate(eq, absolute=False)
+        print(deq)
+        teq = sympy.sqrt(Delta(abc.d)**2/abc.d**2+Delta(abc.c)**2/abc.c**2+errorpp.propagate(abc.a+abc.b)**2/(abc.a+abc.b)**2)*eq
+        self.assertAlmostEqual(self.sub(deq), self.sub(teq))
 
+    def test_complex4(self):
+        eq = ((abc.a+abc.b)*abc.c/abc.d)**3
+        deq = errorpp.propagate(eq, absolute=True)
+        teq = 3 * ((abc.a+abc.b)*abc.c/abc.d)**2 * errorpp.propagate((abc.a+abc.b)*abc.c/abc.d)
+
+        self.assertAlmostEqual(self.sub2(deq), self.sub2(teq))
+        self.assertAlmostEqual(self.sub3(deq), self.sub3(teq))
+
+    def test_complex5(self):
+
+        eq = (abc.c+abc.d)**3
+        deq = errorpp.propagate(eq, absolute=True)
+        teq = 3 * (abc.c+abc.d)**2 * errorpp.propagate(abc.c+abc.d)
+    
+        self.assertAlmostEqual(self.sub2(deq), self.sub2(teq))
+        self.assertAlmostEqual(self.sub3(deq), self.sub3(teq))
+
+    def test_complex6(self):
+        eq = ((abc.a + abc.b)*abc.c/abc.d)
+        deq = errorpp.propagate(eq, absolute=True)
+        print(deq)
+        teq = sympy.sqrt(Delta(abc.d)**2/abc.d**2+Delta(abc.c)**2/abc.c**2+errorpp.propagate(abc.a+abc.b)**2/(abc.a+abc.b)**2)*eq
+        self.assertAlmostEqual(self.sub2(deq), self.sub2(teq))
+        self.assertAlmostEqual(self.sub3(deq), self.sub3(teq))
 if __name__ == '__main__':
     unittest.main()
 

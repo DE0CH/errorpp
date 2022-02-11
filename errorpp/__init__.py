@@ -12,8 +12,14 @@ def _propagate(eq, absolute = True):
     if isinstance(eq, sympy.core.add.Add):
         return sympy.sqrt(functools.reduce(lambda a, b: a+_propagate(b, absolute=absolute)**2, (0,)+eq.args))
     elif isinstance(eq, sympy.core.mul.Mul):
-        number = functools.reduce(lambda a, b: a * (b if b.is_number else 1), eq.args)
+        numbers = tuple(filter(lambda x: x.is_number, eq.args))
+        if len(numbers):
+            number = functools.reduce(lambda a, b: a*b, numbers)
+        else:
+            number = 1
+
         number = abs(number)
+        print(number)
         others = tuple(filter(lambda x: not x.is_number, eq.args))
         if len(others) == 1:
             two = _propagate(others[0])
@@ -28,7 +34,6 @@ def _propagate(eq, absolute = True):
         return number*two
 
     elif isinstance(eq, sympy.core.power.Pow):
-        print(eq.args[1]*eq.args[0]**(eq.args[1]-1))
         return eq.args[1]*eq.args[0]**(eq.args[1]-1)*_propagate(eq.args[0], absolute=absolute)
 
 
