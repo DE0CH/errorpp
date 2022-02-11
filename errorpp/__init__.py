@@ -57,8 +57,9 @@ def _propagate(eq, absolute = True, depth=float('inf')):
         raise NotImplementedError(f'Function {eq} not suppored')
 
 def propagate_latex(eq, absolute = True):
-   
-   pass
+    eq = sympy.parsing.latex.parse_latex(eq)
+    deq = propagate(eq)
+    return sympy.latex(deq)
 
 def proprate_steps(eq, absolute = True, step=1):
     prev = None
