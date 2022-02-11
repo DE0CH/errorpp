@@ -12,7 +12,7 @@ sys.path.append(str(path_root))
 import errorpp
 
 Delta = sympy.Function("Delta")
-class TestCases(unittest.TestCase):
+class TestPropagate(unittest.TestCase):
 
     def test_multiplication(self):
         eq = 2 * abc.a * abc.b * abc.c
@@ -159,7 +159,6 @@ class TestCases(unittest.TestCase):
     def test_complex3(self):
         eq = ((abc.a + abc.b)*abc.c/abc.d)
         deq = errorpp.propagate(eq, absolute=False)
-        print(deq)
         teq = sympy.sqrt(Delta(abc.d)**2/abc.d**2+Delta(abc.c)**2/abc.c**2+errorpp.propagate(abc.a+abc.b)**2/(abc.a+abc.b)**2)*eq
         self.assertAlmostEqual(self.sub(deq), self.sub(teq))
 
@@ -183,10 +182,10 @@ class TestCases(unittest.TestCase):
     def test_complex6(self):
         eq = ((abc.a + abc.b)*abc.c/abc.d)
         deq = errorpp.propagate(eq, absolute=True)
-        print(deq)
         teq = sympy.sqrt(Delta(abc.d)**2/abc.d**2+Delta(abc.c)**2/abc.c**2+errorpp.propagate(abc.a+abc.b)**2/(abc.a+abc.b)**2)*eq
         self.assertAlmostEqual(self.sub2(deq), self.sub2(teq))
         self.assertAlmostEqual(self.sub3(deq), self.sub3(teq))
+
 if __name__ == '__main__':
     unittest.main()
 

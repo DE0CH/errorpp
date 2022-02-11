@@ -1,16 +1,29 @@
+from re import L
 import sympy
 import sympy.parsing.latex
 import functools
+from sympy import abc
 
-delta = sympy.Function("Delta")
+Delta = sympy.Function("Delta")
+
+
+def delta_factory(absolute=True, depth=1):
+    class ImplementedDeltaNoAbsolute(sympy.Function):
+        @classmethod
+        def eval(cls, x):
+            return _propagate(x, absolute=absolute, depth=depth)
+    return ImplementedDeltaNoAbsolute
+    
 
 def propagate(eq, absolute = True):
-    eq = sympy.simplify(eq)
     return _propagate(eq, absolute=absolute)
 
-def _propagate(eq, absolute = True):
+def _propagate(eq, absolute = True, depth=float('inf')):
+    if depth == 0: 
+        return Delta(eq)
+    depth -= 1
     if isinstance(eq, sympy.core.add.Add):
-        return sympy.sqrt(functools.reduce(lambda a, b: a+_propagate(b, absolute=absolute)**2, (0,)+eq.args))
+        return sympy.sqrt(functools.reduce(lambda a, b: a+b, map(lambda x: _propagate(x, absolute=absolute, depth=depth)**2, eq.args)))
     elif isinstance(eq, sympy.core.mul.Mul):
         numbers = tuple(filter(lambda x: x.is_number, eq.args))
         if len(numbers):
@@ -19,13 +32,12 @@ def _propagate(eq, absolute = True):
             number = 1
 
         number = abs(number)
-        print(number)
         others = tuple(filter(lambda x: not x.is_number, eq.args))
         if len(others) == 1:
-            two = _propagate(others[0])
+            two = _propagate(others[0], absolute=absolute, depth=depth)
 
         else:
-            two = sympy.sqrt(sum(map(lambda x: _propagate(x, absolute=absolute)**2/x**2, others)))
+            two = sympy.sqrt(sum(map(lambda x: _propagate(x, absolute=absolute, depth=depth)**2/x**2, others)))
             three = functools.reduce(lambda a, b: a*b, others)
             if absolute:
                 three = abs(three)
@@ -38,7 +50,7 @@ def _propagate(eq, absolute = True):
 
 
     elif isinstance(eq, sympy.core.symbol.Symbol):
-        return delta(eq)
+        return Delta(eq)
     elif eq.is_number:
         return 0
     else:
@@ -48,7 +60,15 @@ def propagate_latex(eq, absolute = True):
    
    pass
 
-def proprate_steps(eq, absolute = True):
-   # TODO
-   pass
+def proprate_steps(eq, absolute = True, step=1):
+    prev = None
+    eq = Delta(eq)
+    while True:
+        eq = eq.replace(Delta, delta_factory(absolute=absolute, depth=step))
+        if eq != prev:
+            yield eq
+            prev = eq
+        else:
+            break
+        
 
