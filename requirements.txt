@@ -1,2 +1,4 @@
-sympy==1.9
-antlr4-python3-runtime==4.7.2
+# packagest need only for development
+pytest
+pytest-watch
+coverage

@@ -1,5 +1,8 @@
 FROM python:3.6
+COPY setup.cfg setup.cfg
+COPY setup.py setup.py 
+RUN pip3 install . 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 COPY . .
-CMD python tests/test.py
+CMD pwd

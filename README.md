@@ -12,11 +12,11 @@ pip install errorpp
 As of the moment, the error propagation only supports expanding addition, multiplication, division and real number exponent. If you input anything else such as `sin(x)` it will throw an error. If you want see more functions implemented, open an issue, or better yet, make a pull request!
 
 # How to use
-In its core, it uses `sympy` to process the expression. the `errorpp.propagate` function will take a `sympy` expression as the argument return the `sympy` expression with the error propagated. 
+In its core, it uses `sympy` to process the expression. the `errorpp.propagate` function will take a `sympy` expression as the argument return the `sympy` expression with the error propagated. If your variables are all positive, you can pass in `absolute=False` to prevent the program from wrapping variables in absolute sign, which makes a cleaner output as `sympy` can cancel variables more easily.
 
 You can also use the counterpart `errorpp.propagate_latex` which takes a string of latex expression as the argument and output the latex expression with the error propagated. 
 
-Alternatively, you directly call this from the terminal, which takes an latex equation as its first argument and print the latex expression with the error propagated to standard output. 
+Alternatively, you directly call this from the terminal, which takes an latex equation as its first argument and print the latex expression with the error propagated to standard output. Use `--no-absolute` to prevent the program from wrapping variables in absolute sign.
 
 Since the code base is quite small, I won't make a website with the documentation, but instead I will write the explanation in the docstring in the source code. 
 
