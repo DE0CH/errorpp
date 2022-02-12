@@ -5,3 +5,4 @@ coverage
 setuptools 
 wheel 
 build
+check-manifest

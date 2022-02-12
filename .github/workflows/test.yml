@@ -1,4 +1,3 @@
-# Forked from https://github.com/ipython/ipython/blob/master/.github/workflows/test.yml
 name: Run tests
 
 on:
@@ -17,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: ["3.6, "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
         # Test all on ubuntu, test ends on macos
 
     steps:
@@ -30,8 +29,6 @@ jobs:
 
     - name: Install and update Python dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel build
-        python -m pip install --upgrade check-manifest pytest-cov
         python -m pip install --upgrade .
         python -m pip install --upgrade requirements.txt
     - name: Try building with Python build
