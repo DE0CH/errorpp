@@ -1,7 +1,0 @@
-version: "3"
-
-services:
-  errorpp-test:
-    build: .
-  # volumes:
-  #   - "."
