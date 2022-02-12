@@ -40,13 +40,12 @@ Temporary Items
 *.vsix
 
 venv
-.coverage
 htmlcov
 .pytest_cache
 dist
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+**/__pycache__/
 *.py[cod]
 
 # C extensions

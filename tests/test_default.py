@@ -1,4 +1,5 @@
 from distutils.log import error
+from itertools import tee
 import unittest
 import random 
 from pathlib import Path
@@ -7,8 +8,12 @@ from sympy import abc
 import sympy
 from sympy.parsing.latex import parse_latex
 
-path_root = Path(__file__).parents[1]
-sys.path.append(str(path_root))
+try:
+    path_root = Path(__file__).parents[1]
+    sys.path.append(str(path_root))
+except IndexError:
+    # Running tests for the package on pypi
+    pass
 import errorpp
 
 Delta = sympy.Function("Delta")
@@ -185,6 +190,57 @@ class TestPropagate(unittest.TestCase):
         teq = sympy.sqrt(Delta(abc.d)**2/abc.d**2+Delta(abc.c)**2/abc.c**2+errorpp.propagate(abc.a+abc.b)**2/(abc.a+abc.b)**2)*eq
         self.assertAlmostEqual(self.sub2(deq), self.sub2(teq))
         self.assertAlmostEqual(self.sub3(deq), self.sub3(teq))
+
+    def test_latex(self):
+        deq = errorpp.propagate_latex('a + b')
+        teq = r"\sqrt{\Delta^{2}{\left(a \right)} + \Delta^{2}{\left(b \right)}}"
+        self.assertEqual(deq, teq)
+
+    def test_steps(self):
+        eq = ((abc.a+abc.b)*abc.c/abc.d)**3
+        deq = None 
+        for t in errorpp.propagate_steps(eq):
+            deq = t
+        teq = errorpp.propagate(eq)
+        self.assertEqual(deq, teq)
+    
+    def test_steps2(self):
+        """
+        Does not have to pass, depending on the step implementation. 
+        """
+        eq = (abc.a+abc.b)*abc.c/abc.d
+        deq = None
+        for t in errorpp.propagate_steps(eq):
+            deq = t
+            break
+        teq = sympy.sqrt(Delta(1/abc.d)**2*abc.d**2 + Delta(abc.c)**2/abc.c**2 + Delta(abc.a+abc.b)**2/(abc.a+abc.b)**2)*sympy.Abs(eq)
+        self.assertEqual(deq, teq) 
+
+    def test_step3(self):
+        eq =((((abc.a+abc.b)*abc.c/abc.d)**3)+abc.d)*abc.a
+        i = 3
+        a = None
+        for t in errorpp.propagate_steps(eq, step=1):
+            if not i:
+                break
+            a = t
+            i -= 1
+        b = None 
+        for t in errorpp.propagate_steps(eq, step=3):
+            b = t
+            break
+        self.assertEqual(a, b)
+
+    def test_delta_factory(self):
+        eq = ((((abc.a+abc.b)*abc.c/abc.d)**3)+abc.d)*abc.a
+        deq = None
+        for i in errorpp.propagate_steps(eq):
+            deq = i
+            break
+        deq = deq.replace(Delta, errorpp.delta_factory(depth=float('inf')))
+
+        teq = errorpp.propagate(eq)
+        self.assertEqual(deq, teq)
 
 if __name__ == '__main__':
     unittest.main()

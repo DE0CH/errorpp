@@ -1,13 +1,35 @@
-from re import L
+from email.generator import Generator
 import sympy
 import sympy.parsing.latex
 import functools
-from sympy import abc
+from typing import Generator
 
 Delta = sympy.Function("Delta")
 
+def delta_factory(absolute: int=True, depth: int=1) -> sympy.Function:
+    """
+    Creates a subclass of `sympy.Function` that implements the delta function with the recursive error propagation.
 
-def delta_factory(absolute=True, depth=1):
+    Parameters
+    ==========
+    eq: sympy.Expr
+        The expression for which to propagate the error.
+    absolute: bool, optional 
+        If set to False, it will will assume all the symbols are positive and skip wrapping them with absolute sign which makes simplification simpler. 
+    depth: int, optional
+        The depth for the recursion, when the recursion depth is matched, the expression will be wrapped in a placeholder Delta function and returned. This is useful for showing the steps of the propagation.
+
+
+    Examples
+    ========
+    >>> eq = ...
+    >>> Delta = sympy.Function("Delta")
+    >>> deq = errorpp.propagate(eq)
+    >>> teq = Delta(eq).replace(Delta, errorpp.delta_factory(depth=float('inf')))
+    >>> deq == teq
+    # True
+    """
+
     class ImplementedDeltaNoAbsolute(sympy.Function):
         @classmethod
         def eval(cls, x):
@@ -15,11 +37,35 @@ def delta_factory(absolute=True, depth=1):
     return ImplementedDeltaNoAbsolute
     
 
-def propagate(eq, absolute = True):
+def propagate(eq: sympy.Expr, absolute: bool=True) -> sympy.Expr:
+    """
+    Propagate the error in the expression, assuming every variable has an error. 
+    
+    Parameters
+    ==========
+    eq: sympy.Expr
+        The expression for which to propagate the error.
+    absolute: bool, optional 
+        If set to False, it will will assume all the symbols are positive and skip wrapping them with absolute sign which makes simplification simpler. 
+    
+    """
     return _propagate(eq, absolute=absolute)
 
-def _propagate(eq, absolute = True, depth=float('inf')):
-    if depth == 0: 
+def _propagate(eq: sympy.Expr, absolute: bool=True, depth: int=float('inf')) -> sympy.Expr:
+    """
+    Internal Recursive Function to handle propagation. `propagate` is more userfriendly. 
+
+    Parameters
+    ==========
+    eq: sympy.Expr
+        The expression for which to propagate the error.
+    absolute: bool, optional 
+        If set to False, it will will assume all the symbols are positive and skip wrapping them with absolute sign which makes simplification simpler. 
+    depth: int, optional
+        The depth for the recursion, when the recursion depth is matched, the expression will be wrapped in a placeholder Delta function and returned. This is useful for showing the steps of the propagation.
+    
+    """
+    if depth <= 0: 
         return Delta(eq)
     depth -= 1
     if isinstance(eq, sympy.core.add.Add):
@@ -56,12 +102,35 @@ def _propagate(eq, absolute = True, depth=float('inf')):
     else:
         raise NotImplementedError(f'Function {eq} is not suppored')
 
-def propagate_latex(eq, absolute = True):
+def propagate_latex(eq: str, absolute = True) -> str:
+    """
+    Propagate the error in the expression, assuming every variable has an error. 
+    
+    Parameters
+    ==========
+    eq: str
+        The expression for which to propagate the error, written in latex.
+    absolute: bool, optional 
+        If set to False, it will will assume all the symbols are positive and skip wrapping them with absolute sign which makes simplification simpler. 
+        """
+    
     eq = sympy.parsing.latex.parse_latex(eq)
     deq = propagate(eq)
     return sympy.latex(deq)
 
-def propagate_steps(eq, absolute = True, step=1):
+def propagate_steps(eq: sympy.Expr, absolute: bool=True, step: int=1) -> Generator[sympy.Expr, None, None]:
+    """
+    Propagate the error one `step` at time. This is useful for showing the steps of error propagation. 
+
+    Parameters 
+    ====
+    eq: sympy.Expr
+        The expression for which to propagate the error.
+    absolute: bool, optional 
+        If set to False, it will will assume all the symbols are positive and skip wrapping them with absolute sign which makes simplification simpler. 
+    step: int, optional
+        The number of steps to carry out in each iteration. 
+    """
     prev = None
     eq = Delta(eq)
     while True:
