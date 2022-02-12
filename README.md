@@ -3,7 +3,7 @@
 
 # Automatic Error Propagation
 
-In physics when there are uncertainties, you might need to deal with error propagation, which gets really annoying as the equation gets longer. You can use this package to automate the process.
+When there are uncertainties in physics, you might need to deal with error propagation, which gets really annoying really really fast as the equation gets longer, especially if you need to write down the expression using variables for a school test or something. This package automates the process of propagating the error. 
 
 ## Installation
 
