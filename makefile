@@ -1,4 +1,4 @@
-.PHONY: publish build clean all
+.PHONY: publish build clean all test-publish
 
 all: clean build
 
@@ -11,3 +11,9 @@ clean:
 
 build:
 	python3 -m build
+
+test-publish:
+	cd tests
+	docker-compose up --build --force-recreate
+	vagrant up
+	vagrant destory -f

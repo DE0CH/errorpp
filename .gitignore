@@ -43,6 +43,7 @@ venv
 htmlcov
 .pytest_cache
 dist
+**/.vagrant
 
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
