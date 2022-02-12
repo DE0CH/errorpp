@@ -123,14 +123,22 @@ def propagate_steps(eq: sympy.Expr, absolute: bool=True, step: int=1) -> Generat
     Propagate the error one `step` at time. This is useful for showing the steps of error propagation. 
 
     Parameters 
-    ====
+    ==========
     eq: sympy.Expr
         The expression for which to propagate the error.
     absolute: bool, optional 
         If set to False, it will will assume all the symbols are positive and skip wrapping them with absolute sign which makes simplification simpler. 
     step: int, optional
         The number of steps to carry out in each iteration. 
+    
+    Examples
+    ========
+    >>> eq == ..
+    >>> for t in errorpp.propagate_steps(eq):
+    ...     print(t) # This is the expression for the step
+    
     """
+
     prev = None
     eq = Delta(eq)
     while True:
