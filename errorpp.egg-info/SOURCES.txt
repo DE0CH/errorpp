@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+errorpp/__init__.py
+errorpp/__main__.py
+errorpp.egg-info/PKG-INFO
+errorpp.egg-info/SOURCES.txt
+errorpp.egg-info/dependency_links.txt
+errorpp.egg-info/requires.txt
+errorpp.egg-info/top_level.txt

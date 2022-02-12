@@ -61,7 +61,7 @@ def propagate_latex(eq, absolute = True):
     deq = propagate(eq)
     return sympy.latex(deq)
 
-def proprate_steps(eq, absolute = True, step=1):
+def propagate_steps(eq, absolute = True, step=1):
     prev = None
     eq = Delta(eq)
     while True:
