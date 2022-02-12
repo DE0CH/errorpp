@@ -1,4 +1,4 @@
-.PHONY: publish build
+.PHONY: publish build clean all
 
 all: clean build
 

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: errorpp
-Version: 0.0.3
+Version: 0.0.4
 Summary: Automatically propagate the error in an expression symbolically
 Home-page: https://github.com/de0ch/errorpp
 Author: Deyao Chen
