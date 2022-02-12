@@ -2,7 +2,7 @@
 
 all: clean build
 
-publish: build
+publish:
 	python3 -m twine upload --repository pypi dist/*
 
 clean:

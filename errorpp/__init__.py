@@ -54,7 +54,7 @@ def _propagate(eq, absolute = True, depth=float('inf')):
     elif eq.is_number:
         return 0
     else:
-        raise NotImplementedError(f'Function {eq} not suppored')
+        raise NotImplementedError(f'Function {eq} is not suppored')
 
 def propagate_latex(eq, absolute = True):
     eq = sympy.parsing.latex.parse_latex(eq)
