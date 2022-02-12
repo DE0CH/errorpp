@@ -69,7 +69,7 @@ Vagrant.configure("2") do |config|
     choco install python --version 3.6
     curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py
     C:\\Python36\\python.exe get-pip.py
-    C:\\Python36\\Scripts\\pip.exe install errorpp==0.0.4
+    C:\\Python36\\Scripts\\pip.exe install errorpp==0.0.5
     C:\\Python36\\python.exe C:\\vagrant\\test_default.py
   SHELL
 
