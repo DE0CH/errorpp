@@ -8,7 +8,7 @@ In physics when there are uncertainties, you might need to deal with error propa
 ## Installation
 
 ```bash
-pip install errorpp
+$ pip install errorpp
 ```
 
 ## Function and Scope 
@@ -27,7 +27,7 @@ Since the code base is quite small, I won't make a website with the documentatio
 
 You can use this directly in terminal
 ```bash
-errorpp '\\frac{- c_{w} m_{1} \\left(- T_{1} + T_{f}\\right) + c_{w} m_{2} \\left(T_{2} - T_{f}\\right)}{- T_{1} + T_{f}}' --no-absolute
+$ errorpp '\\frac{- c_{w} m_{1} \\left(- T_{1} + T_{f}\\right) + c_{w} m_{2} \\left(T_{2} - T_{f}\\right)}{- T_{1} + T_{f}}' --no-absolute
 # output
 # \frac{\sqrt{\frac{c_{w}^{2} m_{1}^{2} \left(- T_{1} + T_{f}\right)^{2} \left(\frac{\Delta^{2}{\left(T_{1} \right)} + \Delta^{2}{\left(T_{f} \right)}}{\left(- T_{1} + T_{f}\right)^{2}} + \frac{\Delta^{2}{\left(m_{1} \right)}}{m_{1}^{2}} + \frac{\Delta^{2}{\left(c_{w} \right)}}{c_{w}^{2}}\right) + c_{w}^{2} m_{2}^{2} \left(T_{2} - T_{f}\right)^{2} \left(\frac{\Delta^{2}{\left(T_{2} \right)} + \Delta^{2}{\left(T_{f} \right)}}{\left(T_{2} - T_{f}\right)^{2}} + \frac{\Delta^{2}{\left(m_{2} \right)}}{m_{2}^{2}} + \frac{\Delta^{2}{\left(c_{w} \right)}}{c_{w}^{2}}\right)}{\left(- c_{w} m_{1} \left(- T_{1} + T_{f}\right) + c_{w} m_{2} \left(T_{2} - T_{f}\right)\right)^{2}} + \frac{\Delta^{2}{\left(T_{1} \right)} + \Delta^{2}{\left(T_{f} \right)}}{\left(- T_{1} + T_{f}\right)^{2}}} \left(- c_{w} m_{1} \left(- T_{1} + T_{f}\right) + c_{w} m_{2} \left(T_{2} - T_{f}\right)\right)}{- T_{1} + T_{f}}
 ```

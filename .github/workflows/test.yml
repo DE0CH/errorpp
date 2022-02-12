@@ -41,5 +41,7 @@ jobs:
         COLUMNS: 120
       run: |
         pytest --color=yes -raXxs ${{ startsWith(matrix.python-version, 'pypy') && ' ' || '--cov --cov-report=xml' }}
+    - name: Test Console Tool 
+      run: errorpp -h
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
