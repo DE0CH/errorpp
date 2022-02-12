@@ -238,7 +238,6 @@ class TestPropagate(unittest.TestCase):
             deq = i
             break
         deq = deq.replace(Delta, errorpp.delta_factory(depth=float('inf')))
-
         teq = errorpp.propagate(eq)
         self.assertEqual(deq, teq)
 

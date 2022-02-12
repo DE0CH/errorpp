@@ -1,3 +1,4 @@
+[![Python Test](https://github.com/DE0CH/errorpp/actions/workflows/test.yml/badge.svg)](https://github.com/DE0CH/errorpp/actions/workflows/test.yml)
 # Automatic Error Propagation
 
 If you take a physics class, you may need to deal with error propagation, which gets really annoying as the equation gets longer. If you are using this, make sure you are actually allowed to and you understand how error propagation works. Consider using this the same way you'd use wolfram alpha -- it can get you an answer easily but it won't make you better at math.
