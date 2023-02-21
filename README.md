@@ -1,5 +1,5 @@
 [![Python Test](https://github.com/DE0CH/errorpp/actions/workflows/test.yml/badge.svg)](https://github.com/DE0CH/errorpp/actions/workflows/test.yml)
-[![codecov Badge](https://codecov.io/gh/de0ch/errorpp/branch/master/graph/badge.svg)](https://codecov.io/gh/de0ch/errorpp)
+[![codecov Badge](https://codecov.io/gh/de0ch/errorpp/branch/main/graph/badge.svg)](https://codecov.io/gh/de0ch/errorpp)
 
 # Automatic Error Propagation
 
